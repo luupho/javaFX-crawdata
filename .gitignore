@@ -1,0 +1,47 @@
+# Eclipse
+bin/
+tmp/
+*.tmp
+*.bak
+*.swp
+*~.nib
+.settings/
+loadpath
+.recommenders/
+.classpath
+.project
+
+# Maven
+target/
+log/
+*.log
+mvn.wtp/
+.apt_generated/
+target/
+maven-status/
+*.jar
+*.war
+*.ear
+hs_err_pid*
+
+# JavaFX
+dist/
+build/
+nbactions.xml
+nb-configuration.xml
+
+# IntelliJ
+out/
+.idea/
+*.iws
+*.iml
+*.ipr
+
+# NetBeans
+nbproject/private/
+build/
+nbbuild/
+dist/
+nbdist/
+nbactions.xml
+nb-configuration.xml
