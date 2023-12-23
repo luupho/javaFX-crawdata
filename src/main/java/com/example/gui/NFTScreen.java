@@ -31,7 +31,7 @@ public class NFTScreen extends ScrollPane {
         label.setStyle("-fx-font-size: 24px;");
         mainBox.getChildren().add(label);
 
-        // Tạo một HBox để chứa nút "Fetch Data" và "Export Data"
+        // Tạo một HBox để chứa nút "Fetch Data", "Export Data" và "Import Data"
         HBox buttonBox = new HBox();
         buttonBox.setSpacing(10);
 
@@ -44,6 +44,11 @@ public class NFTScreen extends ScrollPane {
         Button exportButton = new Button("Export Data");
         exportButton.setOnAction(event -> exportData());
         buttonBox.getChildren().add(exportButton);
+
+        // Thêm nút "Import Data"
+        Button importButton = new Button("Import Data");
+        importButton.setOnAction(event -> importData());
+        buttonBox.getChildren().add(importButton);
 
         // Thêm HBox chứa nút vào mainBox
         mainBox.getChildren().add(buttonBox);
@@ -118,6 +123,39 @@ public class NFTScreen extends ScrollPane {
             Files.write(Paths.get(filePath), jsonString.getBytes());
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    private void importData() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Import Data");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("JSON Files", "*.json"));
+        File selectedFile = fileChooser.showOpenDialog(null);
+
+        if (selectedFile != null) {
+            // Đọc dữ liệu từ file JSON và hiển thị lên giao diện
+            List<TrendingNFT> importedData = readNiftyGatewayDataFromJson(selectedFile.getAbsolutePath());
+
+            // Lưu dữ liệu vào currentData
+            currentData.clear();
+            currentData.addAll(importedData);
+
+            // Hiển thị dữ liệu trên giao diện người dùng
+            displayDataOnUI(importedData);
+        }
+    }
+
+    private List<TrendingNFT> readNiftyGatewayDataFromJson(String filePath) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            // Đọc nội dung JSON từ file
+            String jsonString = new String(Files.readAllBytes(Paths.get(filePath)));
+
+            // Chuyển đổi JSON thành danh sách NFT
+            return objectMapper.readValue(jsonString, objectMapper.getTypeFactory().constructCollectionType(List.class, TrendingNFT.class));
+        } catch (IOException e) {
+            e.printStackTrace();
+            return new ArrayList<>();
         }
     }
 }
